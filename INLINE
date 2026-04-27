@@ -1,0 +1,39 @@
+------------------------------------------------------------------
+Inline declaration is a feature in ABAP where you can 
+declare variables at the same time they are used, 
+instead of declaring them separately in a DATA or TYPES statement.
+
+You can also use in select statement and much more
+
+Example :  internal table : select .. into table @data(it_itab) 
+
+Link to video for explanation: 
+https://youtu.be/_g5zrryN848
+------------------------------------------------------------------
+
+1. Simple assignment
+DATA(lv_text) = 'Hello Welcome to ASNCODELAB'.
+
+No need to write old syntax like before:
+
+DATA lv_text TYPE string.
+lv_text = 'Hello'.
+
+
+2. With SELECT
+SELECT * FROM mara
+  INTO TABLE @DATA(lt_data).
+lt_data is automatically typed as internal table of mara
+
+
+3. READ TABLE
+READ TABLE lt_data INTO DATA(ls_data)
+  WITH KEY matnr = '123'.
+
+4. LOOP
+LOOP AT lt_data INTO DATA(ls_row).
+  WRITE: ls_row-matnr.
+ENDLOOP.
+
+5. Method call result
+DATA(lv_result) = lo_obj->get_value( ).
