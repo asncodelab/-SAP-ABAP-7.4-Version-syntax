@@ -1,0 +1,56 @@
+-----------------------------------------------------------------
+COND is a powerful conditional expression that lets you 
+assign values based on conditions in a compact,
+inline way—similar to a CASE or IF but usable inside expressions.
+
+SYNTAX: 
+DATA(result) = COND type(
+WHEN condition1 THEN value1
+WHEN condition2 THEN value2
+ELSE value_default ).
+
+Link for explanation:
+https://youtu.be/_w-Ez7sxQ3M
+-----------------------------------------------------------------
+
+
+1. Simple IF-ELSE replacement
+Old way
+IF lv_age >= 18.
+  lv_status = 'ADULT'.
+ELSE.
+  lv_status = 'MINOR'.
+ENDIF.
+
+New way with COND
+DATA(lv_status) = COND string(
+  WHEN lv_age >= 18 THEN 'ADULT'
+  ELSE 'MINOR' ).
+
+2. Multiple conditions
+DATA(lv_grade) = COND string(
+  WHEN lv_marks >= 90 THEN 'A+'
+  WHEN lv_marks >= 75 THEN 'A'
+  WHEN lv_marks >= 50 THEN 'B'
+  WHEN lv_marks >= 35 THEN 'C'
+  ELSE 'F' ).
+
+3. With arithmetic
+DATA(lv_discount) = COND i(
+  WHEN lv_amount > 1000 THEN 10
+  WHEN lv_amount > 500  THEN 5
+  ELSE 0 ).
+
+4. Using COND in SELECT
+SELECT matnr,
+       erdat,
+       COND string(
+         WHEN mtart = 'FERT' THEN 'Finished'
+         ELSE 'Other' ) AS type
+  FROM mara
+  INTO TABLE @DATA(lt_data).
+
+5. With method calls
+DATA(lv_text) = COND string(
+  WHEN lo_obj->is_valid( ) = abap_true THEN 'OK'
+  ELSE 'NOT OK' ).
