@@ -4,4 +4,28 @@ Link : https://youtu.be/2_2ZyNk9gds
 Above link you will find the explanation's related to CONV and ALPHA.
 ------------------------------------------------------------------------
 
+In ABAP, CONV is a constructor operator used for type conversion—it converts a value to a specified data type in a clean, inline way.
+
+Basic syntax:
+CONV type( value )
     
+1. String → Integer
+DATA(lv_int) = CONV i( '123' ).
+
+2. With packed numbers (DEC)
+DATA(lv_price) = CONV p( '123.45' ).
+
+3. Data lv_value type i value 123.
+lcl_method=>meth_set( exporting importing_para = CONV #( lv_value ) ). 
+
+ALPHA is a conversion routine in SAP ABAP used to convert values to and from internal SAP format by adding or removing leading zeros.
+It is mainly used for key fields like material numbers, customer numbers, vendor numbers, etc.
+
+
+1. External → Internal (add leading zeros)
+DATA(lv_matnr) = |{ '123' ALPHA = IN }|.
+Result: '0000000123'
+
+2. Internal → External (remove leading zeros)
+DATA(lv_output) = |{ '0000000123' ALPHA = OUT }|.
+Result: '123'
