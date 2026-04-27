@@ -22,6 +22,39 @@ ALPHA is a conversion routine in SAP ABAP used to convert values to and from int
 It is mainly used for key fields like material numbers, customer numbers, vendor numbers, etc.
 
 
+---------------------------------------------
+*Old Way of uisng conversio routine:
+
+External → Internal (adds zeros)
+DATA(lv_input)  TYPE string VALUE '123'.
+DATA(lv_output) TYPE matnr.
+
+CALL FUNCTION 'CONVERSION_EXIT_ALPHA_INPUT'
+  EXPORTING
+    input  = lv_input
+  IMPORTING
+    output = lv_output.
+
+" Result: lv_output = '0000000123'
+
+
+Internal → External (removes zeros)
+DATA(lv_input)  TYPE matnr VALUE '0000000123'.
+DATA(lv_output) TYPE string.
+
+CALL FUNCTION 'CONVERSION_EXIT_ALPHA_OUTPUT'
+  EXPORTING
+    input  = lv_input
+  IMPORTING
+    output = lv_output.
+
+" Result: lv_output = '123'
+
+---------------------------------------------
+
+
+*New Way:
+
 1. External → Internal (add leading zeros)
 DATA(lv_matnr) = |{ '123' ALPHA = IN }|.
 Result: '0000000123'
