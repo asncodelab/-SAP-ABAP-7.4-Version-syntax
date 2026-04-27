@@ -1,1 +1,53 @@
+------------------------------------------------------------------------------------
+VALUE is a constructor expression in ABAP used to create 
+and initialize variables, structures, or internal tables directly with values.
+It allows you to build data objects in a single statement instead of multiple steps.
+------------------------------------------------------------------------------------
 
+Old ABAP Syntax (Classic Way)
+
+Creating and filling an internal table:
+
+DATA: lt_tab TYPE TABLE OF string,
+      ls_tab TYPE string.
+
+ls_tab = 'A'.
+APPEND ls_tab TO lt_tab.
+ls_tab = 'B'.
+APPEND ls_tab TO lt_tab.
+
+NEW ABAP Syntax 
+
+1. Simple “value” (basic meaning)
+
+A value is just the content stored in a variable.
+DATA lv_num TYPE i.
+lv_num = 10.   " 10 is the value
+
+2. VALUE Constructor Operator (important modern ABAP)
+The VALUE keyword is used to create and initialize data objects in a concise way.
+
+Example: Structure
+TYPES: BEGIN OF ty_person,
+         name TYPE string,
+         age  TYPE i,
+       END OF ty_person.
+
+DATA(ls_person) = VALUE ty_person(
+  name = 'Rahul'
+  age  = 25
+).
+
+
+3. VALUE in Expressions
+Used in modern inline expressions:
+DATA(lv_result) = VALUE i( 5 + 3 ).
+
+
+4. VALUE with FOR (advanced)
+Used for looping and building tables:
+DATA lt_even TYPE TABLE OF i.
+
+lt_even = VALUE #( FOR i = 1 UNTIL i > 10
+                   WHERE ( i MOD 2 = 0 )
+                   ( i ) ).
