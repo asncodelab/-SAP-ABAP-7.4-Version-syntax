@@ -1,0 +1,51 @@
+-------------------------------------------------------------------------------------
+Read- to read the data on specific condition and  to read the data on index.
+Find the index using read statement - line_index( )
+Get Index Number of Particular Entry from Internal Table.
+-------------------------------------------------------------------------------------
+
+1. READ TABLE with inline declaration
+READ TABLE lt_data INTO DATA(ls_data)
+  WITH KEY id = 1.
+DATA(ls_data) is declared inline
+
+2. Using ASSIGNING (recommended for performance)
+READ TABLE lt_data ASSIGNING FIELD-SYMBOL(<fs_data>)
+  WITH KEY id = 1.
+
+3. Table expression (most modern way)
+DATA(ls_data) = lt_data[ id = 1 ].
+
+This replaces READ TABLE with Index  = 1
+Important:
+If no entry is found → runtime error (CX_SY_ITAB_LINE_NOT_FOUND) Check carefully
+
+Safe version using OPTIONAL
+DATA(ls_data) = VALUE #( lt_data[ id = 1 ] OPTIONAL ).
+
+4. Check existence (without fetching data)
+IF line_exists( lt_data[ id = 1 ] ).
+  " exists
+ENDIF.
+
+-------------------------------------------------------------------------------------
+NEW is a constructor expression in ABAP used to create objects (instances of classes) 
+dynamically and return a reference to the created object.
+It is the modern replacement for CREATE OBJECT.
+Example: object creation: data(oref) = NEW <<class name/data type>>( ).
+-------------------------------------------------------------------------------------
+
+1. Creating an object (replacement for CREATE OBJECT)
+
+Old way
+DATA lo_obj TYPE REF TO lcl_class.
+CREATE OBJECT lo_obj.
+
+New way (7.4+)
+DATA(lo_obj) = NEW lcl_class( ).
+
+2. Passing constructor parameters
+DATA(lo_obj) = NEW lcl_class(
+  iv_name = 'John'
+  iv_age  = 25
+).
