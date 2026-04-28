@@ -2,6 +2,9 @@
 VALUE is a constructor expression in ABAP used to create 
 and initialize variables, structures, or internal tables directly with values.
 It allows you to build data objects in a single statement instead of multiple steps.
+
+Video Explanation for Value:
+https://youtu.be/szFULKmrSBs?si=9ekmZ6XLDXIwJbNK
 ------------------------------------------------------------------------------------
 
 Old ABAP Syntax (Classic Way)
