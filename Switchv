@@ -1,0 +1,91 @@
+---------------------------------------------------------------------------
+In ABAP, the modern equivalent of a classic CASE statement is the 
+SWITCH expression(introduced in newer ABAP versions). 
+It’s more concise and can be used inline—especially useful for assignments.
+---------------------------------------------------------------------------
+
+Basic CASE Example:
+
+DATA lv_day TYPE string VALUE 'MON'.
+
+CASE lv_day.
+  WHEN 'MON'.
+    WRITE: 'Monday'.
+  WHEN 'TUE'.
+    WRITE: 'Tuesday'.
+  WHEN 'WED'.
+    WRITE: 'Wednesday'.
+  WHEN 'THU'.
+    WRITE: 'Thursday'.
+  WHEN 'FRI'.
+    WRITE: 'Friday'.
+  WHEN 'SAT'.
+    WRITE: 'Saturday'.
+  WHEN 'SUN'.
+    WRITE: 'Sunday'.
+  WHEN OTHERS.
+    WRITE: 'Unknown Day'.
+ENDCASE.
+Example with Numbers
+DATA lv_marks TYPE i VALUE 75.
+
+CASE lv_marks.
+  WHEN 90 TO 100.
+    WRITE: 'Grade A'.
+  WHEN 75 TO 89.
+    WRITE: 'Grade B'.
+  WHEN 50 TO 74.
+    WRITE: 'Grade C'.
+  WHEN OTHERS.
+    WRITE: 'Fail'.
+ENDCASE.
+
+Key Points:
+
+CASE ... ENDCASE is used for decision-making.
+WHEN OTHERS acts like a default case.
+You can use ranges (e.g., WHEN 75 TO 89).
+Unlike SWITCH, CASE is used for executing multiple statements, not returning a value.
+
+Here’s a simple example showing SWITCH in an “all cases” style:
+
+Basic SWITCH Example
+DATA(lv_day) = 'MON'.
+DATA(lv_text) TYPE string.
+
+lv_text = SWITCH string(
+  lv_day
+  WHEN 'MON' THEN 'Monday'
+  WHEN 'TUE' THEN 'Tuesday'
+  WHEN 'WED' THEN 'Wednesday'
+  WHEN 'THU' THEN 'Thursday'
+  WHEN 'FRI' THEN 'Friday'
+  WHEN 'SAT' THEN 'Saturday'
+  WHEN 'SUN' THEN 'Sunday'
+  ELSE 'Unknown Day'
+).
+
+WRITE: lv_text.
+
+Key Points:
+
+SWITCH returns a value (unlike CASE, which controls flow).
+You must specify the result type after SWITCH (here string).
+ELSE is optional but recommended to handle unexpected values.
+
+Example with Numeric Cases
+DATA(lv_grade) = 2.
+DATA(lv_result) TYPE string.
+
+lv_result = SWITCH string(
+  lv_grade
+  WHEN 1 THEN 'Excellent'
+  WHEN 2 THEN 'Good'
+  WHEN 3 THEN 'Average'
+  WHEN 4 THEN 'Poor'
+  ELSE 'Fail'
+).
+
+WRITE: lv_result.
+
+
