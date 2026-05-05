@@ -1,0 +1,143 @@
+----------------------------------------------------------------------------
+In ABAP, CORRESPONDING is used to copy matching fields between 
+structures or internal tables based on same field names. 
+It’s especially useful when you don’t want to manually assign each field.
+
+----------------------------------------------------------------------------
+
+1. Old Syntax (before modern ABAP)
+
+*Earlier, you typically used MOVE-CORRESPONDING.
+✔ Example
+
+TYPES: BEGIN OF ty_source,
+         name TYPE string,
+         age  TYPE i,
+       END OF ty_source.
+
+TYPES: BEGIN OF ty_target,
+         name TYPE string,
+         age  TYPE i,
+         city TYPE string,
+       END OF ty_target.
+
+DATA: ls_source TYPE ty_source,
+      ls_target TYPE ty_target.
+
+ls_source-name = 'John'.
+ls_source-age  = 30.
+
+MOVE-CORRESPONDING ls_source TO ls_target.
+
+
+2. New Syntax (CORRESPONDING #( ))
+
+*Modern ABAP (7.40+) introduced expression-based syntax.
+
+ls_target = CORRESPONDING #( ls_source ).
+
+✔ Same behavior as MOVE-CORRESPONDING, but cleaner and usable inside expressions.
+
+3. Using MAPPING
+
+Used when field names are different.
+
+ls_target = CORRESPONDING #(
+  ls_source
+  MAPPING target_field = source_field
+).
+✔ Example
+TYPES: BEGIN OF ty_source,
+         fullname TYPE string,
+         years    TYPE i,
+       END OF ty_source.
+
+TYPES: BEGIN OF ty_target,
+         name TYPE string,
+         age  TYPE i,
+       END OF ty_target.
+
+DATA(ls_source) = VALUE ty_source(
+  fullname = 'ASNCODELAB'
+  years    = 30
+).
+
+DATA(ls_target) = CORRESPONDING #(
+  ls_source
+  MAPPING
+    name = fullname
+    age  = years
+).
+Here:
+
+fullname → name
+years → age
+
+4. Using EXCEPT
+
+Used to exclude fields from being copied.
+SYNTAX:
+ls_target = CORRESPONDING #(
+  ls_source
+  EXCEPT field1 field2
+).
+✔ Example
+TYPES: BEGIN OF ty_source,
+         name TYPE string,
+         age  TYPE i,
+         salary TYPE i,
+       END OF ty_source.
+
+TYPES: BEGIN OF ty_target,
+         name TYPE string,
+         age  TYPE i,
+         salary TYPE i,
+       END OF ty_target.
+
+DATA(ls_source) = VALUE ty_source(
+  name = 'John'
+  age = 30
+  salary = 5000
+).
+
+DATA(ls_target) = CORRESPONDING #(
+  ls_source
+  EXCEPT salary
+).
+
+Result:
+
+name, age copied
+salary NOT copied
+
+
+5. Using BASE
+
+Used to keep existing values and update only matching ones.
+SYNATX:
+ls_target = CORRESPONDING #(
+  BASE ( ls_target )
+  ls_source
+).
+✔ Example
+DATA(ls_target) = VALUE ty_target(
+  name = 'ASN'
+  age  = 20
+  city = 'Bangalore'
+).
+
+DATA(ls_source) = VALUE ty_source(
+  name = 'ASNCODELAB'
+  age  = 30
+).
+
+ls_target = CORRESPONDING #(
+  BASE ( ls_target )
+  ls_source
+).
+
+Result:
+
+name → updated to 'John'
+age → updated to 30
+city → remains 'Bangalore'
